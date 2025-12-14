@@ -1,0 +1,137 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #333 0, #111 45%, #050505 100%);
+}
+
+/* Center the book on screen */
+#container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Book wrapper */
+.flip-book {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Fake book shadow on the desk */
+.flip-book::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border-radius: 12px;
+    box-shadow:
+        0 0 0 1px rgba(0,0,0,0.4),
+        0 25px 40px rgba(0,0,0,0.6);
+    pointer-events: none;
+}
+
+/* Page base */
+.page {
+    background-color: hsl(35, 55, 98);
+    border: 1px solid hsl(35, 25, 75);
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 6px;
+    position: relative;
+}
+
+/* Paper grain + inner shadow near the spine */
+.page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to right,
+            rgba(0,0,0,0.18) 0%,
+            rgba(0,0,0,0.06) 8%,
+            rgba(255,255,255,0) 18%,
+            rgba(255,255,255,0) 82%,
+            rgba(0,0,0,0.04) 94%,
+            rgba(0,0,0,0.18) 100%
+        ),
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.4) 0px,
+            rgba(255,255,255,0.4) 1px,
+            rgba(230,230,230,0.4) 2px,
+            rgba(230,230,230,0.4) 3px
+        );
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+/* Left page (自動でクラス .--left が付与される) */
+.page.--left {
+    border-right: 0;
+    box-shadow: inset -8px 0 28px -6px rgba(0, 0, 0, 0.35);
+}
+
+/* Right page */
+.page.--right {
+    border-left: 0;
+    box-shadow: inset 8px 0 28px -6px rgba(0, 0, 0, 0.35);
+}
+
+/* Hard cover pages (density: hard or showCover:true) */
+.page.hard {
+    background-color: hsl(35, 45, 82);
+    border-color: hsl(30, 25, 55);
+    box-shadow:
+        inset 0 0 35px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(0,0,0,0.6);
+}
+
+/* Optional cover helpers (mostly for HTML mode, harmless for images) */
+.page.page-cover {
+    background-color: hsl(30, 45, 78);
+    border-color: hsl(30, 25, 55);
+}
+.page.page-cover.page-cover-top {
+    box-shadow:
+        inset 0 0 40px rgba(36, 10, 3, 0.6),
+        -4px 0 10px rgba(0, 0, 0, 0.5);
+}
+.page.page-cover.page-cover-bottom {
+    box-shadow:
+        inset 0 0 40px rgba(36, 10, 3, 0.6),
+        10px 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Make images always fill the page nicely */
+.flip-book img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* ▼ 見開き画像コンテナ（2枚横並び） */
+.page-spread {
+    width: 100%;
+    aspect-ratio: 2820 / 2250;  /* ← 比率を固定する核心 */
+    overflow: hidden;
+    position: relative;
+}
+
+/* ▼ 中の画像（左右ページ） */
+.page-spread img {
+    width: 50%;   /* 見開きなので半分 */
+    height: 100%;
+    object-fit: cover; /* 余白ゼロで比率維持 */
+}
